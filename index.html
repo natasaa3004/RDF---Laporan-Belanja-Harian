@@ -62,46 +62,46 @@ button{
 
 <script>
 
-// AUTO TANGGAL HARI INI
-document.getElementById("tanggal").valueAsDate = new Date();
-
-// GANTI DENGAN URL SCRIPT KAMU
-const scriptURL = "https://script.google.com/macros/s/AKfycbyASJqtpXYji9sCQd8853mMOQ_UB18eYSTsXqySV86Wn_snO6YSfxCPLw0VXTm3e3Q0Cw/exec";
+const scriptURL = "PASTE_URL_BARU_KAMU_DI_SINI";
 
 function kirim(){
 
-  const data = {
-    tanggal : document.getElementById("tanggal").value,
-    nama    : document.getElementById("nama").value,
-    barang  : document.getElementById("barang").value,
-    jumlah  : document.getElementById("jumlah").value,
-    harga   : document.getElementById("harga").value
-  };
+  const formData = new FormData();
+
+  formData.append("tanggal", document.getElementById("tanggal").value);
+  formData.append("nama", document.getElementById("nama").value);
+  formData.append("barang", document.getElementById("barang").value);
+  formData.append("jumlah", document.getElementById("jumlah").value);
+  formData.append("harga", document.getElementById("harga").value);
 
   fetch(scriptURL,{
     method:"POST",
-    body:JSON.stringify(data),
-    headers:{
-      "Content-Type":"application/json"
-    }
+    body: formData
   })
 
-  .then(res => res.text())
-  .then(txt => {
+  .then(()=>{
+
     document.getElementById("status").innerHTML="✅ Berhasil disimpan";
+
     clearForm();
+
   })
 
-  .catch(err=>{
+  .catch(()=>{
+
     document.getElementById("status").innerHTML="❌ Gagal simpan";
+
   });
+
 }
 
 function clearForm(){
+
   document.getElementById("nama").value="";
   document.getElementById("barang").value="";
   document.getElementById("jumlah").value="";
   document.getElementById("harga").value="";
+
 }
 
 </script>
