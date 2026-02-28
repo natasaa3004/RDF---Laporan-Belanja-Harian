@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Form Belanja Harian</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #45a049;
+    }
+
+    .msg {
+      margin-top: 12px;
+      text-align: center;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h2>📋 Form Belanja Harian</h2>
+
+  <input type="text" id="tanggal" disabled>
+
+  <input type="text" id="barang" placeholder="Nama Barang">
+
+  <input type="number" id="jumlah" placeholder="Jumlah">
+
+  <input type="number" id="harga" placeholder="Harga (Rp)">
+
+  <button onclick="kirim()">Simpan</button>
+
+  <div class="msg" id="msg"></div>
+
+</div>
+
+
+<script>
+
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzajHJEenJvFDODqROlrCyEL3jt9VCfGJWqQBqkBwewbOhE2zB5FTSH5GQWbw5cppNezg/exec";
+
+// Tampilkan tanggal
+document.getElementById("tanggal").value =
+  new Date().toLocaleDateString("id-ID");
+
+
+// Kirim data
+function kirim() {
+
+  let barang = document.getElementById("barang").value;
+  let jumlah = document.getElementById("jumlah").value;
+  let harga = document.getElementById("harga").value;
+
+  if (!barang || !jumlah || !harga) {
+    document.getElementById("msg").innerText =
+      "❗ Lengkapi semua data";
+    return;
+  }
+
+  let total = jumlah * harga;
+
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      barang: barang,
+      jumlah: jumlah,
+      harga: harga,
+      total: total
+    })
+  })
+
+  .then(() => {
+    document.getElementById("msg").innerText =
+      "✅ Data tersimpan";
+
+    document.getElementById("barang").value = "";
+    document.getElementById("jumlah").value = "";
+    document.getElementById("harga").value = "";
+  })
+
+  .catch(() => {
+    document.getElementById("msg").innerText =
+      "❌ Gagal simpan";
+  });
+}
+
+</script>
+
+</body>
+</html>
